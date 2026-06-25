@@ -1,0 +1,15 @@
+{
+  "change": "redesign-index-ink-wash",
+  "phase": "design",
+  "mode": "compact",
+  "canonical_spec": "openspec",
+  "generated_by": "comet-handoff.sh",
+  "context_hash": "100f2cdc98782cd3fee1ec840d2d3c8b9ae6ba2b0e3fbb44ba8b0bb8db6b14b2",
+  "files": [
+    { "path": "openspec/changes/redesign-index-ink-wash/proposal.md", "sha256": "c922b97de28a31bfcb3805633b4afb86d5c9873d0b29a36850f1132a207e8fb4" },
+    { "path": "openspec/changes/redesign-index-ink-wash/design.md", "sha256": "72c75b5fa775678a33ae650775a4f4b68e42fce457083e792c693f8813127d91" },
+    { "path": "openspec/changes/redesign-index-ink-wash/tasks.md", "sha256": "4226f195fe30c556ac881d7576679ab3941c2aadbcef1bf7781d7a96d44ac1e1" },
+    { "path": "openspec/changes/redesign-index-ink-wash/specs/ink-landscape-canvas/spec.md", "sha256": "a9481ff2f586ed4d20029ec26ab568be89669dc550fd32deedb65d1c4f878114" },
+    { "path": "openspec/changes/redesign-index-ink-wash/specs/scroll-reactive-animation/spec.md", "sha256": "0c3cbe8e9bf8bf40c4f1d05ae80313035ac7e8c2dc35b5b25aac325195307a92" }
+  ]
+}

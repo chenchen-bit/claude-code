@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>之間 — 介于传统与现代之间的生活美学</title>
+<meta name="description" content="之間是一個以「之间」为哲学的生活方式品牌，在传统与现代、东方与西方之间寻找美的可能。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;600&family=Noto+Sans+SC:wght@300;400;500&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   0. Design Tokens
+   ============================================ */
+:root {
+  --color-bg: #F5F0EB;
+  --color-bg-alt: #EAE3DA;
+  --color-surface: #FAF7F3;
+  --color-text: #1C1815;
+  --color-text-muted: #7A736C;
+  --color-text-light: #A69F98;
+  --color-accent: #3B5E5C;
+  --color-accent-light: #7B9C9A;
+  --color-accent-warm: #BF3A2B;
+  --color-border: #D6D0C9;
+  --color-ink: rgba(28, 24, 21, 0.06);
+
+  --font-display: 'Noto Serif SC', 'Songti SC', serif;
+  --font-body: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-western: 'Playfair Display', 'Georgia', serif;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+  --space-2xl: 12rem;
+  --space-3xl: 16rem;
+
+  --content-max: 1200px;
+  --content-narrow: 720px;
+
+  --duration-slow: 1.4s;
+  --duration-medium: 0.7s;
+  --duration-fast: 0.3s;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ============================================
+   1. Reset & Global
+   ============================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================
+   2. Typography
+   ============================================ */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1.3;
+}
+
+.section-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin-bottom: var(--space-md);
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  margin-bottom: var(--space-md);
+}
+
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.2em;
+  font-family: var(--font-display);
+  color: var(--color-text-light);
+  font-size: 0.875rem;
+  user-select: none;
+}
+
+/* ============================================
+   3. Canvas 山水背景
+   ============================================ */
+#landscape-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Content sections — translucent for landscape visibility */
+.timeline-section,
+.gallery-section {
+  background: rgba(250, 247, 243, 0.85) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.pillars-section,
+.contact-section {
+  background: rgba(245, 240, 235, 0.80) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.site-footer {
+  background: rgba(245, 240, 235, 0.90) !important;
+}
+
+.hero {
+  background: transparent !important;
+}
+
+/* ============================================
+   4. Navigation
+   ============================================ */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  transition: background var(--duration-medium) var(--ease-out),
+              padding var(--duration-medium) var(--ease-out);
+}
+
+.site-nav.scrolled {
+  background: rgba(245, 240, 235, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: var(--space-sm) var(--space-lg);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  color: var(--color-text);
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.nav-link {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  transition: color var(--duration-fast) ease;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-accent);
+  transition: width var(--duration-fast) var(--ease-out);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  color: var(--color-accent);
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
+  width: 100%;
+}
+
+/* ============================================
+   5. Hero
+   ============================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem var(--space-md) 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Floating characters */
+.floating-chars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floating-char {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 200;
+  color: var(--color-ink);
+  font-size: clamp(3rem, 8vw, 8rem);
+  user-select: none;
+  opacity: 0;
+  animation: charFloat 12s var(--ease-in-out) infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes charFloat {
+  0%, 100% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  10% {
+    opacity: 0.5;
+  }
+  30% {
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate3d(var(--dx, 30px), var(--dy, -40px), 0) rotate(var(--rot, 5deg));
+  }
+  70% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0;
+  }
+}
+
+.floating-char:nth-child(1) { top: 10%; left: 5%; --dx: 40px; --dy: -30px; --rot: 8deg; --delay: 0s; }
+.floating-char:nth-child(2) { top: 15%; right: 8%; --dx: -30px; --dy: 40px; --rot: -5deg; --delay: 1.5s; }
+.floating-char:nth-child(3) { bottom: 20%; left: 3%; --dx: 20px; --dy: -50px; --rot: 12deg; --delay: 3s; }
+.floating-char:nth-child(4) { top: 50%; right: 3%; --dx: -40px; --dy: 20px; --rot: -10deg; --delay: 4.5s; }
+.floating-char:nth-child(5) { bottom: 30%; right: 15%; --dx: 50px; --dy: 30px; --rot: 6deg; --delay: 6s; }
+.floating-char:nth-child(6) { top: 30%; left: 15%; --dx: -20px; --dy: -40px; --rot: -8deg; --delay: 7.5s; }
+.floating-char:nth-child(7) { bottom: 10%; left: 20%; --dx: 30px; --dy: -20px; --rot: 4deg; --delay: 9s; }
+.floating-char:nth-child(8) { top: 5%; left: 50%; --dx: 0px; --dy: 50px; --rot: -3deg; --delay: 10.5s; }
+
+/* Hero central content */
+.hero-content-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-characters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+  user-select: none;
+}
+
+.hero-char {
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 25vw, 20rem);
+  font-weight: 200;
+  line-height: 1;
+  color: var(--color-text);
+  opacity: 0;
+  filter: blur(8px);
+}
+
+.hero-char-left.is-visible {
+  animation: charInkLeft var(--duration-slow) var(--ease-out) forwards;
+}
+
+.hero-char-right.is-visible {
+  animation: charInkRight var(--duration-slow) var(--ease-out) forwards;
+}
+
+@keyframes charInkLeft {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateX(-100px) scale(0.9);
+  }
+  60% {
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes charInkRight {
+  0% {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateX(100px) scale(0.9);
+  }
+  60% {
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0) scale(1);
+  }
+}
+
+.hero-divider {
+  width: min(60vw, 400px);
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-md) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-divider::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.hero-divider.is-visible::after {
+  animation: inkLineDraw var(--duration-slow) var(--duration-medium) var(--ease-out) forwards;
+}
+
+@keyframes inkLineDraw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.hero-content {
+  text-align: center;
+  max-width: var(--content-narrow);
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.hero-content.is-visible {
+  animation: heroFadeIn var(--duration-medium) calc(var(--duration-slow) + var(--duration-medium)) var(--ease-out) forwards;
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-tagline {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 300;
+  color: var(--color-text);
+  letter-spacing: 0.15em;
+  margin-bottom: var(--space-sm);
+}
+
+.hero-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-light);
+  letter-spacing: 0.1em;
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  opacity: 0;
+  animation: heroFadeIn 1s 2.5s forwards;
+  z-index: 2;
+}
+
+.hero-scroll-hint span {
+  font-size: 0.6875rem;
+  letter-spacing: 0.15em;
+  color: var(--color-text-light);
+  writing-mode: vertical-rl;
+}
+
+.hero-scroll-hint .scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--color-text-light), transparent);
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* ============================================
+   6. Brand Story — Timeline
+   ============================================ */
+.timeline-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.timeline-section .container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: var(--space-xl) auto 0;
+  padding: 0 var(--space-md);
+}
+
+/* Vertical line */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--color-border);
+  transform: translateX(-50%);
+}
+
+.timeline-line-progress {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  background: var(--color-accent);
+  transform: translateX(-50%);
+  height: 0;
+  transition: height var(--duration-medium) var(--ease-out);
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--space-xl);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--duration-medium) var(--ease-out),
+              transform var(--duration-medium) var(--ease-out);
+}
+
+.timeline-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.timeline-item:nth-child(odd) {
+  flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.timeline-item-content {
+  width: calc(50% - var(--space-xl));
+  padding: var(--space-md);
+}
+
+.timeline-item:nth-child(odd) .timeline-item-content {
+  text-align: right;
+  padding-right: var(--space-lg);
+}
+
+.timeline-item:nth-child(even) .timeline-item-content {
+  text-align: left;
+  padding-left: var(--space-lg);
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 50%;
+  top: var(--space-md);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 2px solid var(--color-accent);
+  transform: translateX(-50%) scale(0);
+  transition: transform var(--duration-medium) var(--ease-out);
+  z-index: 2;
+}
+
+.timeline-item.is-visible .timeline-dot {
+  transform: translateX(-50%) scale(1);
+}
+
+.timeline-year {
+  font-family: var(--font-western);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-accent);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-xs);
+}
+
+.timeline-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+}
+
+.timeline-title .en {
+  font-family: var(--font-western);
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-text-light);
+  margin-left: 0.5rem;
+  font-style: italic;
+}
+
+.timeline-desc {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+/* ============================================
+   7. Pillars — Horizontal Scroll
+   ============================================ */
+.pillars-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.pillars-section .container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.scroll-wrapper {
+  position: relative;
+  margin-top: var(--space-xl);
+  padding: 0 var(--space-lg);
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  transition: all var(--duration-fast) var(--ease-out);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+.scroll-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.scroll-left { left: 0; }
+.scroll-right { right: 0; }
+
+.scroll-container {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-sm) 0;
+  scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar { display: none; }
+
+.pillar-card {
+  flex: 0 0 calc(100% / 3 - var(--space-md));
+  min-width: 280px;
+  scroll-snap-align: center;
+  padding: var(--space-xl) var(--space-lg);
+  text-align: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  transition: all var(--duration-medium) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ink wash hover mask */
+.pillar-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
+              var(--color-ink) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity var(--duration-medium) var(--ease-out);
+  pointer-events: none;
+}
+
+.pillar-card:hover::before {
+  opacity: 1;
+}
+
+.pillar-character {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 6vw, 5.5rem);
+  font-weight: 200;
+  color: var(--color-accent);
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: color var(--duration-fast) ease;
+}
+
+.pillar-card:hover .pillar-character {
+  color: var(--color-text);
+}
+
+.pillar-divider {
+  width: 2.5rem;
+  height: 1px;
+  background: var(--color-border);
+  margin: var(--space-sm) auto;
+  position: relative;
+  z-index: 1;
+  transition: width var(--duration-medium) var(--ease-out),
+              background var(--duration-fast) ease;
+}
+
+.pillar-card:hover .pillar-divider {
+  width: 4rem;
+  background: var(--color-accent);
+}
+
+.pillar-name {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-body);
+  position: relative;
+  z-index: 1;
+}
+
+.pillar-card:hover .pillar-name {
+  color: var(--color-text);
+}
+
+.pillar-desc-cn {
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+  position: relative;
+  z-index: 1;
+}
+
+.pillar-desc-en {
+  font-size: 0.8125rem;
+  color: var(--color-text-light);
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================
+   8. Atmosphere Gallery
+   ============================================ */
+.gallery-section {
+  padding: var(--space-3xl) 0;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.gallery-section .container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.gallery {
+  column-count: 3;
+  column-gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.gallery-item {
+  display: inline-block;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: var(--space-md);
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  transition: all var(--duration-medium) var(--ease-out);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, var(--color-ink) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity var(--duration-medium) var(--ease-out);
+  pointer-events: none;
+}
+
+.gallery-item:hover::before {
+  opacity: 1;
+}
+
+.gallery-item:hover {
+  border-color: var(--color-accent-light);
+  transform: translateY(-2px);
+}
+
+.gallery-symbol {
+  font-size: 2.5rem;
+  color: var(--color-accent-light);
+  display: block;
+  margin-bottom: var(--space-sm);
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-label {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-hint {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+  letter-spacing: 0.1em;
+  position: relative;
+  z-index: 1;
+}
+
+.gallery-hint .en {
+  font-family: var(--font-western);
+  font-style: italic;
+}
+
+/* ============================================
+   9. Quote Section — Vertical Text
+   ============================================ */
+.quote-section {
+  padding: var(--space-2xl) var(--space-md);
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.quote-main {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 200;
+  color: var(--color-text);
+  letter-spacing: 0.2em;
+  line-height: 1.6;
+}
+
+.quote-main .highlight {
+  color: var(--color-accent);
+}
+
+.quote-translation {
+  font-family: var(--font-western);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* ============================================
+   10. Contact + Footer
+   ============================================ */
+.contact-section {
+  padding: var(--space-3xl) 0;
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+}
+
+.contact-greeting {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 300;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+  letter-spacing: 0.08em;
+}
+
+.contact-desc {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-lg);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-email {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-accent);
+  padding: var(--space-sm) var(--space-lg);
+  border: 1px solid var(--color-border);
+  letter-spacing: 0.05em;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.contact-email:hover,
+.contact-email:focus-visible {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.contact-social {
+  margin-top: var(--space-lg);
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.contact-social a {
+  font-size: 0.8125rem;
+  color: var(--color-text-light);
+  transition: color var(--duration-fast) ease;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.contact-social a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-accent);
+  transition: width var(--duration-fast) var(--ease-out);
+}
+
+.contact-social a:hover,
+.contact-social a:focus-visible {
+  color: var(--color-accent);
+}
+
+.contact-social a:hover::after,
+.contact-social a:focus-visible::after {
+  width: 100%;
+}
+
+.site-footer {
+  padding: var(--space-lg) var(--space-md);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  color: var(--color-text-muted);
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+}
+
+/* ============================================
+   11. Scroll Reveal
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity var(--duration-medium) var(--ease-out),
+              transform var(--duration-medium) var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ============================================
+   12. Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html { scroll-behavior: auto; }
+
+  .hero-char,
+  .hero-content,
+  .reveal,
+  .timeline-item {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .hero-divider::after { transform: scaleX(1); }
+  .hero-scroll-hint { display: none; }
+  .floating-chars { display: none; }
+  .timeline-dot { transform: translateX(-50%) scale(1); }
+  .timeline-line-progress { height: 100% !important; }
+  .pillar-card::before,
+  .gallery-item::before { display: none; }
+}
+
+/* ============================================
+   13. Responsive
+   ============================================ */
+@media (max-width: 1024px) {
+  .pillar-card {
+    flex: 0 0 calc(50% - var(--space-md));
+  }
+
+  .gallery {
+    column-count: 2;
+  }
+
+  .timeline::before,
+  .timeline-line-progress,
+  .timeline-dot {
+    left: 2rem;
+  }
+
+  .timeline-item,
+  .timeline-item:nth-child(even) {
+    flex-direction: row;
+  }
+
+  .timeline-item-content,
+  .timeline-item:nth-child(odd) .timeline-item-content,
+  .timeline-item:nth-child(even) .timeline-item-content {
+    width: calc(100% - 4rem);
+    margin-left: 4rem;
+    text-align: left;
+    padding: var(--space-sm) var(--space-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .site-nav {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .site-nav.scrolled {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .hero-characters {
+    gap: 1rem;
+  }
+
+  .scroll-wrapper {
+    padding: 0;
+  }
+
+  .scroll-btn { display: none; }
+
+  .pillar-card {
+    flex: 0 0 85%;
+    min-width: 0;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .gallery {
+    column-count: 1;
+  }
+
+  .site-footer {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+
+  .contact-social {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .contact-email {
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --space-xl: 5rem;
+    --space-2xl: 6rem;
+    --space-3xl: 8rem;
+  }
+
+  .hero-char {
+    font-size: clamp(4rem, 30vw, 6rem);
+  }
+
+  .hero-characters {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @keyframes charInkLeft {
+    0% { opacity: 0; filter: blur(8px); transform: translateY(-40px) scale(0.9); }
+    100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+  }
+
+  @keyframes charInkRight {
+    0% { opacity: 0; filter: blur(8px); transform: translateY(40px) scale(0.9); }
+    100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+  }
+
+  .hero-tagline {
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+  }
+
+  .timeline-item-content,
+  .timeline-item:nth-child(odd) .timeline-item-content,
+  .timeline-item:nth-child(even) .timeline-item-content {
+    padding: var(--space-sm);
+  }
+
+  .timeline-title { font-size: 1.1rem; }
+}
+
+/* ============================================
+   14. Focus & Accessibility
+   ============================================ */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent-light); }
+</style>
+</head>
+<body>
+
+<!-- 水墨山水 Canvas 背景 -->
+<canvas id="landscape-canvas" aria-hidden="true"></canvas>
+
+<!-- ============ Navigation ============ -->
+<nav class="site-nav" role="navigation" aria-label="主导航">
+  <a href="#" class="nav-logo">之間</a>
+  <div class="nav-links">
+    <a href="#story" class="nav-link">故事</a>
+    <a href="#pillars" class="nav-link">理念</a>
+    <a href="#gallery" class="nav-link">氛围</a>
+    <a href="#contact" class="nav-link">联系</a>
+  </div>
+</nav>
+
+<!-- ============ Hero ============ -->
+<section class="hero" aria-label="品牌介绍">
+  <!-- Floating characters -->
+  <div class="floating-chars" aria-hidden="true">
+    <span class="floating-char">之</span>
+    <span class="floating-char">間</span>
+    <span class="floating-char">承</span>
+    <span class="floating-char">融</span>
+    <span class="floating-char">创</span>
+    <span class="floating-char">境</span>
+    <span class="floating-char">韵</span>
+    <span class="floating-char">和</span>
+  </div>
+
+  <div class="hero-content-wrapper">
+    <div class="hero-characters">
+      <span class="hero-char hero-char-left" aria-hidden="true">之</span>
+      <span class="hero-char hero-char-right" aria-hidden="true">間</span>
+    </div>
+    <div class="hero-divider" aria-hidden="true"></div>
+    <div class="hero-content">
+      <h1 class="hero-tagline">介于传统与现代之间的生活美学</h1>
+      <p class="hero-subtitle">概念店 · 生活选品 · 文化空间</p>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span>滚 动</span>
+  </div>
+</section>
+
+<!-- ============ Quote Section ============ -->
+<section class="quote-section reveal" aria-label="品牌引文">
+  <p class="quote-main reveal reveal-delay-1">
+    <span class="highlight">之间</span>不是界限，<br>
+    而是可能发生的地方。
+  </p>
+  <p class="quote-translation reveal reveal-delay-2">
+    In between is not a boundary,<br>
+    but a place where things happen.
+  </p>
+</section>
+
+<!-- ============ Brand Story Timeline ============ -->
+<section id="story" class="timeline-section" aria-label="品牌故事">
+  <div class="container">
+    <p class="section-label reveal" style="text-align:center;">Our Story</p>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align:center;font-weight:200;letter-spacing:0.15em;">从之间出发</h2>
+
+    <div class="timeline" role="list">
+      <div class="timeline-line-progress" id="timeline-progress" aria-hidden="true"></div>
+
+      <article class="timeline-item reveal" role="listitem">
+        <div class="timeline-item-content">
+          <div class="timeline-year">2018</div>
+          <h3 class="timeline-title">缘起 <span class="en">Origin</span></h3>
+          <p class="timeline-desc">品牌概念在两位创始人的对话中萌芽。他们相信，美存在于东西方、传统与现代的交汇处。</p>
+        </div>
+        <div class="timeline-dot" aria-hidden="true"></div>
+      </article>
+
+      <article class="timeline-item reveal" role="listitem">
+        <div class="timeline-item-content">
+          <div class="timeline-year">2020</div>
+          <h3 class="timeline-title">立 <span class="en">Establish</span></h3>
+          <p class="timeline-desc">首场展览「之间」在上海举办，展出 30 位艺术家与手工艺人的跨界作品，正式进入公众视野。</p>
+        </div>
+        <div class="timeline-dot" aria-hidden="true"></div>
+      </article>
+
+      <article class="timeline-item reveal" role="listitem">
+        <div class="timeline-item-content">
+          <div class="timeline-year">2023</div>
+          <h3 class="timeline-title">成长 <span class="en">Grow</span></h3>
+          <p class="timeline-desc">线下空间落成，集展览、选品与茶室于一体。开始与国内外独立设计师建立长期合作。</p>
+        </div>
+        <div class="timeline-dot" aria-hidden="true"></div>
+      </article>
+
+      <article class="timeline-item reveal" role="listitem">
+        <div class="timeline-item-content">
+          <div class="timeline-year">2025</div>
+          <h3 class="timeline-title">融 <span class="en">Integrate</span></h3>
+          <p class="timeline-desc">受邀参加米兰设计周，以「东方韵律」为主题的空间装置获得国际关注。品牌走向更广阔的舞台。</p>
+        </div>
+        <div class="timeline-dot" aria-hidden="true"></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Pillars ============ -->
+<section id="pillars" class="pillars-section" aria-label="品牌理念">
+  <div class="container">
+    <p class="section-label reveal" style="text-align:center;">Principles</p>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align:center;font-weight:200;letter-spacing:0.15em;">承 · 融 · 创</h2>
+  </div>
+
+  <div class="scroll-wrapper" role="region" aria-label="核心理念，可左右滚动">
+    <button class="scroll-btn scroll-left" aria-label="向左滚动">‹</button>
+    <div class="scroll-container" id="pillars-scroll" role="list">
+      <article class="pillar-card reveal" role="listitem" tabindex="0">
+        <span class="pillar-character">承</span>
+        <div class="pillar-divider"></div>
+        <h3 class="pillar-name">Inheritance</h3>
+        <p class="pillar-desc-cn">尊重传统，但不被其束缚</p>
+        <p class="pillar-desc-en">Honoring tradition without being bound by it</p>
+      </article>
+
+      <article class="pillar-card reveal reveal-delay-1" role="listitem" tabindex="0">
+        <span class="pillar-character">融</span>
+        <div class="pillar-divider"></div>
+        <h3 class="pillar-name">Fusion</h3>
+        <p class="pillar-desc-cn">在差异中找到和谐</p>
+        <p class="pillar-desc-en">Finding harmony in difference</p>
+      </article>
+
+      <article class="pillar-card reveal reveal-delay-2" role="listitem" tabindex="0">
+        <span class="pillar-character">创</span>
+        <div class="pillar-divider"></div>
+        <h3 class="pillar-name">Creation</h3>
+        <p class="pillar-desc-cn">以过去为养分，创造新的可能</p>
+        <p class="pillar-desc-en">Nourished by the past, creating new possibilities</p>
+      </article>
+    </div>
+    <button class="scroll-btn scroll-right" aria-label="向右滚动">›</button>
+  </div>
+</section>
+
+<!-- ============ Atmosphere Gallery ============ -->
+<section id="gallery" class="gallery-section" aria-label="氛围画廊">
+  <div class="container">
+    <p class="section-label reveal" style="text-align:center;">Atmosphere</p>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align:center;font-weight:200;letter-spacing:0.15em;">意象</h2>
+
+    <div class="gallery">
+      <div class="gallery-item reveal">
+        <span class="gallery-symbol">✦</span>
+        <p class="gallery-label">茶</p>
+        <p class="gallery-hint">一壶山水 <span class="en">— Tea</span></p>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <span class="gallery-symbol">◈</span>
+        <p class="gallery-label">庭</p>
+        <p class="gallery-hint">方寸之间 <span class="en">— Garden</span></p>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <span class="gallery-symbol">❋</span>
+        <p class="gallery-label">器</p>
+        <p class="gallery-hint">手作之温 <span class="en">— Craft</span></p>
+      </div>
+      <div class="gallery-item reveal">
+        <span class="gallery-symbol">～</span>
+        <p class="gallery-label">风</p>
+        <p class="gallery-hint">穿堂而过 <span class="en">— Wind</span></p>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <span class="gallery-symbol">⊹</span>
+        <p class="gallery-label">光</p>
+        <p class="gallery-hint">影随心动 <span class="en">— Light</span></p>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <span class="gallery-symbol">◇</span>
+        <p class="gallery-label">石</p>
+        <p class="gallery-hint">历久弥新 <span class="en">— Stone</span></p>
+      </div>
+      <div class="gallery-item reveal">
+        <span class="gallery-symbol">◎</span>
+        <p class="gallery-label">墨</p>
+        <p class="gallery-hint">意在笔先 <span class="en">— Ink</span></p>
+      </div>
+      <div class="gallery-item reveal reveal-delay-1">
+        <span class="gallery-symbol">♢</span>
+        <p class="gallery-label">竹</p>
+        <p class="gallery-hint">虚怀若谷 <span class="en">— Bamboo</span></p>
+      </div>
+      <div class="gallery-item reveal reveal-delay-2">
+        <span class="gallery-symbol">✧</span>
+        <p class="gallery-label">雪</p>
+        <p class="gallery-hint">静听无声 <span class="en">— Snow</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Contact ============ -->
+<section id="contact" class="contact-section" aria-label="联系方式">
+  <div class="container-narrow" style="max-width:var(--content-narrow);margin:0 auto;padding:0 var(--space-md);">
+    <p class="section-label reveal">Contact</p>
+    <h2 class="contact-greeting reveal reveal-delay-1">期待与您相遇</h2>
+    <p class="contact-desc reveal reveal-delay-2">
+      无论是合作邀约还是想要了解更多，我们期待您的来信。
+    </p>
+    <a href="mailto:hello@zhijian.com" class="contact-email reveal reveal-delay-2">
+      hello@zhijian.com
+    </a>
+    <div class="contact-social reveal reveal-delay-3">
+      <a href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">微信公众号</a>
+      <a href="#" target="_blank" rel="noopener noreferrer">小红书</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer class="site-footer" role="contentinfo">
+  <span class="footer-brand">之間</span>
+  <span class="footer-copy">&copy; 2026 之間 · 保留所有权利</span>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // ============================================================
+  // Perlin Noise — simplified simplex variant
+  // ============================================================
+  class PerlinNoise {
+    constructor(seed) {
+      const perm = Array.from({length: 256}, (_, i) => i);
+      for (let i = 255; i > 0; i--) {
+        const j = Math.floor(seededRandom(seed + i) * (i + 1));
+        [perm[i], perm[j]] = [perm[j], perm[i]];
+      }
+      this.p = new Array(512);
+      for (let i = 0; i < 512; i++) this.p[i] = perm[i & 255];
+    }
+    noise(x, y) {
+      const X = Math.floor(x) & 255, Y = Math.floor(y) & 255;
+      const xf = x - Math.floor(x), yf = y - Math.floor(y);
+      const u = fade(xf), v = fade(yf);
+      const aa = this.p[this.p[X] + Y], ab = this.p[this.p[X] + Y + 1];
+      const ba = this.p[this.p[X + 1] + Y], bb = this.p[this.p[X + 1] + Y + 1];
+      return lerp(v, lerp(u, grad(aa, xf, yf), grad(ba, xf - 1, yf)),
+                     lerp(u, grad(ab, xf, yf - 1), grad(bb, xf - 1, yf - 1)));
+    }
+  }
+  function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+  function lerp(t, a, b) { return a + t * (b - a); }
+  function grad(hash, x, y) { const h = hash & 3; const u = h < 2 ? x : y; const v = h < 2 ? y : x; return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v); }
+  function seededRandom(seed) { const x = Math.sin(seed + 0.1) * 43758.5453; return x - Math.floor(x); }
+
+  // ============================================================
+  // Landscape rendering engine
+  // ============================================================
+  const perlin = new PerlinNoise(42);
+
+  function drawMountains(ctx, w, h, scrollRatio, time, quality, fgOpacity) {
+    const layers = quality.layers;
+    for (let i = 0; i < layers; i++) {
+      const depth = i / layers;
+      const baseY = h * (0.55 + depth * 0.25);
+      const amplitude = 40 + depth * 80;
+      const frequency = 0.003 + depth * 0.002;
+      const baseOpacity = lerp(depth, 0.08, 0.80);
+      // Apply partition fgOpacity — affects front layers more
+      const depthFactor = lerp(depth, 1.0, 0.3);
+      const opacity = baseOpacity * lerp(depthFactor, 1.0, fgOpacity);
+      const vOffset = -scrollRatio * depth * 200;
+
+      const points = [];
+      const step = Math.max(4, Math.floor(w / 120));
+      for (let x = -20; x <= w + 20; x += step) {
+        const noiseVal = perlin.noise(x * frequency + time * 0.00005 * (1 - depth), depth * 100 + 50);
+        points.push({x, y: baseY + noiseVal * amplitude + vOffset});
+      }
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      for (let p = 0; p < points.length - 1; p++) {
+        const xc = (points[p].x + points[p + 1].x) / 2;
+        const yc = (points[p].y + points[p + 1].y) / 2;
+        ctx.quadraticCurveTo(points[p].x, points[p].y, xc, yc);
+      }
+      ctx.lineTo(w, h);
+      ctx.closePath();
+
+      const grad = ctx.createLinearGradient(0, baseY - amplitude, 0, h);
+      grad.addColorStop(0, `rgba(44, 40, 36, ${opacity})`);
+      grad.addColorStop(0.4, `rgba(44, 40, 36, ${opacity * 0.5})`);
+      grad.addColorStop(1, 'rgba(44, 40, 36, 0)');
+      ctx.fillStyle = grad;
+      ctx.globalCompositeOperation = 'multiply';
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function createMistParticles(count, w, h) {
+    return Array.from({length: count}, () => ({
+      x: Math.random() * w,
+      y: h * (0.25 + Math.random() * 0.55),
+      size: 60 + Math.random() * 200,
+      speed: 0.15 + Math.random() * 0.55,
+      phase: Math.random() * Math.PI * 2,
+    }));
+  }
+
+  function drawMist(ctx, w, h, particles, dt, scrollRatio, mistDensity) {
+    const mistOpacity = lerp(scrollRatio, 0.35, 0.08) * mistDensity;
+    const now = performance.now();
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    particles.forEach(p => {
+      p.x += p.speed * dt * 0.06;
+      if (p.x > w + p.size) p.x = -p.size;
+
+      const alpha = Math.max(0, (0.12 + Math.sin(p.phase + now * 0.00025) * 0.12) * mistOpacity);
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = 'rgba(215, 210, 200, 0.9)';
+      ctx.shadowColor = 'rgba(215, 210, 200, 0.2)';
+      ctx.shadowBlur = 30;
+      ctx.beginPath();
+      ctx.ellipse(p.x, p.y, p.size * 0.5, p.size * 0.2, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+    ctx.restore();
+  }
+
+  function drawInkSplash(ctx, w, h, splash) {
+    const progress = splash.elapsed / splash.duration;
+    if (progress >= 1) return;
+    const radius = splash.maxRadius * Math.min(progress * 2, 1);
+    const opacity = splash.maxOpacity * (1 - progress);
+
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, opacity);
+    const grad = ctx.createRadialGradient(splash.x, splash.y, 0, splash.x, splash.y, radius);
+    grad.addColorStop(0, 'rgba(44, 40, 36, 0.25)');
+    grad.addColorStop(0.3, 'rgba(44, 40, 36, 0.12)');
+    grad.addColorStop(0.7, 'rgba(44, 40, 36, 0.04)');
+    grad.addColorStop(1, 'rgba(44, 40, 36, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(splash.x, splash.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // ============================================================
+  // Scroll partitions
+  // ============================================================
+  const PARTITIONS = [
+    { name: 'hero',    range: [0, 0.15], fgOpacity: [1.0, 0.8],  mistDensity: [1.0, 0.8] },
+    { name: 'story',   range: [0.15, 0.40], fgOpacity: [0.8, 0.5],  mistDensity: [0.8, 0.6] },
+    { name: 'gallery', range: [0.40, 0.65], fgOpacity: [0.5, 0.2],  mistDensity: [0.6, 0.3] },
+    { name: 'ending',  range: [0.65, 1.0], fgOpacity: [0.2, 0],    mistDensity: [0.3, 0.1] },
+  ];
+
+  function getScrollRatio() {
+    const docEl = document.documentElement;
+    const scrollHeight = Math.max(
+      document.body.scrollHeight, docEl.scrollHeight,
+      document.body.offsetHeight, docEl.offsetHeight,
+      document.body.clientHeight, docEl.clientHeight
+    );
+    return Math.min(window.scrollY / (scrollHeight - window.innerHeight), 1);
+  }
+
+  function getPartitionParams(scrollRatio) {
+    const p = PARTITIONS.find(seg => scrollRatio >= seg.range[0] && scrollRatio < seg.range[1])
+      || PARTITIONS[PARTITIONS.length - 1];
+    const t = (scrollRatio - p.range[0]) / (p.range[1] - p.range[0]);
+    return {
+      fgOpacity: lerp(t, p.fgOpacity[0], p.fgOpacity[1]),
+      mistDensity: lerp(t, p.mistDensity[0], p.mistDensity[1]),
+    };
+  }
+
+  // ============================================================
+  // Canvas initialization & animation
+  // ============================================================
+  let state = null;
+
+  function initCanvas() {
+    const canvas = document.getElementById('landscape-canvas');
+    if (!canvas) return null;
+    const ctx = canvas.getContext('2d');
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const isMobile = w < 768;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMid = w >= 768 && w < 1024;
+    const dpr = prefersReduced ? 1 : (isMobile ? 1 : (window.devicePixelRatio || 1));
+
+    const quality = {
+      layers: prefersReduced ? 3 : (isMobile ? 3 : (isMid ? 4 : 5)),
+      particles: prefersReduced ? 0 : (isMobile ? 20 : (isMid ? 35 : 60)),
+      inkSplashes: !prefersReduced && !isMobile,
+    };
+
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.scale(dpr, dpr);
+
+    return { canvas, ctx, w, h, quality, isMobile, prefersReduced, dpr, paused: false, rafId: null, scrollRatio: 0 };
+  }
+
+  let splashTimer = 0;
+  let splashes = [];
+  let lastTime = 0;
+
+  function animate(time) {
+    if (!state || state.paused) return;
+    const dt = Math.min(time - lastTime, 33);
+    lastTime = time;
+    const { ctx, w, h, quality } = state;
+    const scrollRatio = state.scrollRatio;
+    const { fgOpacity, mistDensity } = getPartitionParams(scrollRatio);
+
+    ctx.clearRect(0, 0, w, h);
+
+    // 1. Mountains
+    drawMountains(ctx, w, h, scrollRatio, time, quality, fgOpacity);
+
+    // 2. Mist
+    if (state.mistParticles && state.mistParticles.length) {
+      drawMist(ctx, w, h, state.mistParticles, dt, scrollRatio, mistDensity);
+    }
+
+    // 3. Ink splashes
+    if (quality.inkSplashes) {
+      splashTimer += dt;
+      if (splashTimer > 3000 + Math.random() * 5000) {
+        splashes.push({
+          x: Math.random() * w,
+          y: h * (0.3 + Math.random() * 0.4),
+          maxRadius: 50 + Math.random() * 80,
+          maxOpacity: 0.06 + Math.random() * 0.10,
+          elapsed: 0,
+          duration: 2000 + Math.random() * 2000,
+        });
+        splashTimer = 0;
+      }
+      splashes = splashes.filter(s => s.elapsed < s.duration);
+      splashes.forEach(s => { s.elapsed += dt; drawInkSplash(ctx, w, h, s); });
+    }
+
+    state.rafId = requestAnimationFrame(animate);
+  }
+
+  function startLandscape() {
+    state = initCanvas();
+    if (!state) return;
+
+    if (state.prefersReduced) {
+      drawMountains(state.ctx, state.w, state.h, 0, 0, state.quality, 1);
+      return;
+    }
+
+    state.mistParticles = createMistParticles(state.quality.particles, state.w, state.h);
+
+    const onScroll = () => { if (state) state.scrollRatio = getScrollRatio(); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const onResize = () => {
+      if (state && state.rafId) cancelAnimationFrame(state.rafId);
+      const prevPaused = state ? state.paused : false;
+      state = initCanvas();
+      if (state) {
+        state.paused = prevPaused;
+        if (!state.prefersReduced) {
+          state.mistParticles = createMistParticles(state.quality.particles, state.w, state.h);
+          if (!state.paused) state.rafId = requestAnimationFrame(animate);
+        }
+      }
+    };
+    window.addEventListener('resize', onResize, { passive: true });
+
+    // Pause animation when hero is far out of view
+    const heroSection = document.querySelector('.hero');
+    if (heroSection && 'IntersectionObserver' in window) {
+      const heroObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!state) return;
+          state.paused = !entry.isIntersecting;
+          if (state.paused && state.rafId) {
+            cancelAnimationFrame(state.rafId);
+            state.rafId = null;
+          } else if (!state.paused && !state.rafId && !state.prefersReduced) {
+            lastTime = performance.now();
+            state.rafId = requestAnimationFrame(animate);
+          }
+        });
+      }, { threshold: 0, rootMargin: '0px 0px 100% 0px' });
+      heroObserver.observe(heroSection);
+    }
+
+    lastTime = performance.now();
+    state.rafId = requestAnimationFrame(animate);
+  }
+
+  // ============================================================
+  // Boot
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', startLandscape);
+})();
+
+(function() {
+  'use strict';
+
+  // --- Nav scroll effect ---
+  const nav = document.querySelector('.site-nav');
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // --- Hero entrance ---
+  const heroChars = document.querySelectorAll('.hero-char');
+  const heroDivider = document.querySelector('.hero-divider');
+  const heroContent = document.querySelector('.hero-content');
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      heroChars.forEach(c => c.classList.add('is-visible'));
+      heroDivider.classList.add('is-visible');
+      heroContent.classList.add('is-visible');
+    });
+  });
+
+  // --- Timeline progress line ---
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  const progressLine = document.getElementById('timeline-progress');
+
+  const updateTimeline = () => {
+    if (!timelineItems.length || !progressLine) return;
+    let visibleCount = 0;
+    timelineItems.forEach(item => {
+      if (item.classList.contains('is-visible')) visibleCount++;
+    });
+    const pct = (visibleCount / timelineItems.length) * 100;
+    progressLine.style.height = pct + '%';
+  };
+
+  // --- Horizontal scroll buttons ---
+  const scrollContainer = document.getElementById('pillars-scroll');
+  const scrollLeftBtn = document.querySelector('.scroll-left');
+  const scrollRightBtn = document.querySelector('.scroll-right');
+  const cardWidth = 320;
+
+  if (scrollLeftBtn) {
+    scrollLeftBtn.addEventListener('click', () => {
+      scrollContainer.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+    });
+  }
+
+  if (scrollRightBtn) {
+    scrollRightBtn.addEventListener('click', () => {
+      scrollContainer.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    });
+  }
+
+  // --- Scroll reveal ---
+  const revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+          updateTimeline();
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -60px 0px'
+    });
+
+    revealElements.forEach(el => observer.observe(el));
+  } else {
+    revealElements.forEach(el => el.classList.add('is-visible'));
+    updateTimeline();
+  }
+
+  // --- Re-check timeline on scroll for progress ---
+  window.addEventListener('scroll', updateTimeline, { passive: true });
+})();
+</script>
+</body>
+</html>
