@@ -1,0 +1,8 @@
+node_modules/
+.claude/
+.codegraph/
+.idea/
+.comet/
+skills-lock.json
+.DS_Store
+*.log

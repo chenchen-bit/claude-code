@@ -2,6 +2,8 @@
 comet_change: redesign-index-ink-wash
 role: technical-design
 canonical_spec: openspec
+archived-with: 2026-06-25-redesign-index-ink-wash
+status: final
 ---
 
 # 全页水墨山水动画 — 技术设计

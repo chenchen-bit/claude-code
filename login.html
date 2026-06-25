@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>登录</title>
+<style>
+  /* ===== Reset & Base ===== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0b0d15;
+    overflow: hidden;
+  }
+
+  /* ===== Animated Gradient Background ===== */
+  .bg {
+    position: fixed; inset: 0;
+    z-index: 0;
+  }
+  .bg::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99,102,241,.35) 0%, transparent 70%);
+    top: -150px; left: -150px;
+    animation: floatA 20s ease-in-out infinite;
+  }
+  .bg::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(168,85,247,.25) 0%, transparent 70%);
+    bottom: -100px; right: -100px;
+    animation: floatB 25s ease-in-out infinite;
+  }
+  @keyframes floatA {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33%      { transform: translate(80px,60px) scale(1.1); }
+    66%      { transform: translate(-40px,100px) scale(.95); }
+  }
+  @keyframes floatB {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    33%      { transform: translate(-60px,-80px) scale(1.08); }
+    66%      { transform: translate(50px,-40px) scale(.92); }
+  }
+
+  /* subtle grid overlay */
+  .bg .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* floating particles */
+  .particles {
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: rgba(255,255,255,.15);
+    border-radius: 50%;
+    animation: rise linear infinite;
+  }
+  .particle:nth-child(1)  { left:10%;  width:5px;height:5px; animation-duration:18s; animation-delay:0s; }
+  .particle:nth-child(2)  { left:25%;  width:3px;height:3px; animation-duration:22s; animation-delay:2s; }
+  .particle:nth-child(3)  { left:40%;  width:6px;height:6px; animation-duration:16s; animation-delay:4s; }
+  .particle:nth-child(4)  { left:55%;  width:3px;height:3px; animation-duration:20s; animation-delay:1s; }
+  .particle:nth-child(5)  { left:70%;  width:5px;height:5px; animation-duration:24s; animation-delay:3s; }
+  .particle:nth-child(6)  { left:85%;  width:4px;height:4px; animation-duration:19s; animation-delay:5s; }
+  .particle:nth-child(7)  { left:50%;  width:3px;height:3px; animation-duration:21s; animation-delay:7s; }
+  .particle:nth-child(8)  { left:15%;  width:5px;height:5px; animation-duration:17s; animation-delay:6s; }
+  @keyframes rise {
+    0%   { transform: translateY(100vh) scale(0); opacity:0; }
+    10%  { opacity:1; }
+    90%  { opacity:1; }
+    100% { transform: translateY(-10vh) scale(1); opacity:0; }
+  }
+
+  /* ===== Card ===== */
+  .card {
+    position: relative; z-index: 1;
+    width: 420px;
+    background: rgba(255,255,255,.04);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,.06);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.03),
+      0 20px 60px rgba(0,0,0,.5);
+    padding: 44px 40px 40px;
+    animation: cardIn .8s cubic-bezier(.16,1,.3,1) both;
+  }
+  @keyframes cardIn {
+    from { opacity:0; transform:translateY(30px) scale(.97); }
+    to   { opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  /* ===== Brand ===== */
+  .brand {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .brand .logo {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    width: 52px; height: 52px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #6366f1, #a855f7);
+    margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(99,102,241,.35);
+  }
+  .brand .logo svg {
+    width: 26px; height: 26px;
+    fill: #fff;
+  }
+  .brand h1 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -.3px;
+  }
+  .brand p {
+    color: rgba(255,255,255,.4);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  /* ===== Form ===== */
+  .form-group {
+    margin-bottom: 18px;
+  }
+  .form-group label {
+    display: block;
+    color: rgba(255,255,255,.6);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .input-wrap {
+    position: relative;
+  }
+  .input-wrap .icon {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    width: 18px; height: 18px;
+    color: rgba(255,255,255,.25);
+    pointer-events: none;
+    transition: color .25s;
+  }
+  .input-wrap .icon svg { display:block; width:100%; height:100%; fill:currentColor; }
+  .input-wrap input {
+    width: 100%;
+    padding: 13px 14px 13px 44px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .input-wrap input::placeholder {
+    color: rgba(255,255,255,.2);
+  }
+  .input-wrap input:focus {
+    border-color: rgba(99,102,241,.5);
+    box-shadow: 0 0 0 3px rgba(99,102,241,.15);
+  }
+  .input-wrap:focus-within .icon {
+    color: rgba(99,102,241,.7);
+  }
+
+  /* password toggle */
+  .toggle-pw {
+    position: absolute;
+    right: 12px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    color: rgba(255,255,255,.25);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    transition: color .2s;
+  }
+  .toggle-pw:hover { color: rgba(255,255,255,.5); }
+  .toggle-pw svg { width: 18px; height: 18px; fill:currentColor; display:block; }
+
+  /* ===== Options row ===== */
+  .options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0 24px;
+    font-size: 13px;
+  }
+  .options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,.45);
+    cursor: pointer;
+    user-select: none;
+  }
+  .options label input[type="checkbox"] {
+    appearance: none;
+    width: 16px; height: 16px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .2s, border-color .2s;
+    position: relative;
+  }
+  .options label input[type="checkbox"]:checked {
+    background: #6366f1;
+    border-color: #6366f1;
+  }
+  .options label input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 6px; height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .options a {
+    color: rgba(99,102,241,.7);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .options a:hover { color: #818cf8; }
+
+  /* ===== Button ===== */
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(99,102,241,.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(99,102,241,.45);
+  }
+  .btn-primary:active {
+    transform: scale(.98);
+  }
+  /* ripple */
+  .btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,.08) 100%);
+    pointer-events: none;
+  }
+
+  /* ===== Divider ===== */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0;
+    color: rgba(255,255,255,.2);
+    font-size: 12px;
+  }
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,.06);
+  }
+
+  /* ===== Social buttons ===== */
+  .social-row {
+    display: flex;
+    gap: 10px;
+  }
+  .social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.03);
+    color: rgba(255,255,255,.5);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background .2s, border-color .2s, color .2s;
+    text-decoration: none;
+  }
+  .social-btn:hover {
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.12);
+    color: rgba(255,255,255,.7);
+  }
+  .social-btn svg { width: 18px; height: 18px; }
+
+  /* ===== Footer ===== */
+  .footer {
+    text-align: center;
+    margin-top: 24px;
+    color: rgba(255,255,255,.3);
+    font-size: 13px;
+  }
+  .footer a {
+    color: rgba(99,102,241,.6);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color .2s;
+  }
+  .footer a:hover { color: #818cf8; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 480px) {
+    .card { width: calc(100% - 24px); padding: 32px 24px 28px; }
+    .brand h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="grid"></div>
+  <div class="particles">
+    <div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="brand">
+    <div class="logo">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm1 14.5a1.5 1.5 0 01-3 0v-1a1.5 1.5 0 013 0zm-.25-4.25a.75.75 0 01-1.5 0V9.5a.75.75 0 011.5 0z"/></svg>
+    </div>
+    <h1>创客</h1>
+  </div>
+
+  <form id="loginForm">
+    <div class="form-group">
+      <label for="email">邮箱</label>
+      <div class="input-wrap">
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5z"/></svg>
+        </span>
+        <input type="email" id="email" placeholder="name@example.com" autocomplete="email" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">密码</label>
+      <div class="input-wrap">
+        <span class="icon">
+          <svg viewBox="0 0 24 24"><path d="M18 8h-1V6a5 5 0 00-10 0v2H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V10a2 2 0 00-2-2zm-6 9a2 2 0 110-4 2 2 0 010 4zm3-9H9V6a3 3 0 116 0z"/></svg>
+        </span>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+        <button type="button" class="toggle-pw" id="togglePw" aria-label="切换密码可见">
+          <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="options">
+      <label>
+        <input type="checkbox" checked> 记住我
+      </label>
+      <a href="#">忘记密码？</a>
+    </div>
+
+    <button type="submit" class="btn-primary">登 录</button>
+  </form>
+
+  <div class="divider">或</div>
+
+  <div class="social-row">
+    <button class="social-btn">
+      <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Google
+    </button>
+    <button class="social-btn">
+      <svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" fill="currentColor"/></svg>
+      Apple
+    </button>
+  </div>
+
+  <div class="footer">
+    还没有账号？<a href="register.html">立即注册</a>
+  </div>
+</div>
+
+<script>
+  // Toggle password visibility
+  document.getElementById('togglePw').addEventListener('click', function () {
+    const pw = document.getElementById('password');
+    const isPassword = pw.type === 'password';
+    pw.type = isPassword ? 'text' : 'password';
+    this.innerHTML = isPassword
+      ? '<svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>'
+      : '<svg viewBox="0 0 24 24"><path d="M3.27 2L2 3.27 6.22 7.5A10.5 10.5 0 001 12c1.73 4.39 6 7.5 11 7.5 1.85 0 3.62-.45 5.19-1.27L20.73 22 22 20.73 3.27 2zM12 17c-2.76 0-5-2.24-5-5 0-1.01.3-1.95.82-2.74l1.67 1.67A3.07 3.07 0 009 12a3 3 0 003 3c.47 0 .92-.11 1.33-.3l1.2 1.2A5.06 5.06 0 0112 17zm8.38-1.12l-1.8-1.8c.27-.65.42-1.35.42-2.08 0-2.76-2.24-5-5-5-1.37 0-2.63.55-3.55 1.43L7.65 5.5A10.5 10.5 0 0112 4.5c5 0 9.27 3.11 11 7.5a10.77 10.77 0 01-2.62 3.88z"/></svg>';
+  });
+
+  // ---- localStorage login ----
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const btn = this.querySelector('.btn-primary');
+
+    const users = JSON.parse(localStorage.getItem('maker_users') || '[]');
+    const user = users.find(u => u.email === email && u.password === password);
+
+    if (!user) {
+      btn.textContent = '邮箱或密码错误';
+      btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = '登 录';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 2000);
+      return;
+    }
+
+    btn.textContent = '登录成功！';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.textContent = '登 录';
+      btn.disabled = false;
+    }, 1500);
+  });
+
+  // ---- pre-fill email from register redirect ----
+  const params = new URLSearchParams(window.location.search);
+  const emailParam = params.get('email');
+  if (emailParam) {
+    document.getElementById('email').value = emailParam;
+  }
+
+</script>
+
+</body>
+</html>

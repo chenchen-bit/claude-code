@@ -1,3 +1,7 @@
+---
+archived-with: 2026-06-25-redesign-index-ink-wash
+status: final
+---
 # 全页水墨山水动画 — 实施计划
 
 > **For agentic workers:** 單檔案 HTML（index.html），無 git，無外部依賴。直接在當前工作目錄修改。
