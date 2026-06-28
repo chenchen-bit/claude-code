@@ -3,191 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>注册 · 创客</title>
+<title>注册</title>
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   @import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
 
+  :root {
+    --bg-primary: #0d0d12;
+    --bg-card: #16161d;
+    --bg-input: transparent;
+    --accent: #00d4ff;
+    --accent-glow: rgba(0, 212, 255, 0.35);
+    --accent-dim: rgba(0, 212, 255, 0.12);
+    --text-primary: #e8e8ed;
+    --text-secondary: #9494a0;
+    --text-muted: #555560;
+    --border: #25252d;
+    --radius: 12px;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.6s ease-out;
+  }
+
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-family);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #0b0d15;
+    background: var(--bg-primary);
     overflow: hidden;
   }
 
-  /* ===== Animated Background ===== */
   .bg {
-    position: fixed; inset: 0; z-index: 0;
+    position: fixed; inset: 0;
+    z-index: 0;
   }
-  .bg::before {
-    content: '';
+  .bg .glow {
     position: absolute;
-    width: 600px; height: 600px;
+    width: 640px; height: 640px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(99,102,241,.35) 0%, transparent 70%);
-    top: -150px; left: -150px;
-    animation: floatA 20s ease-in-out infinite;
+    background: radial-gradient(circle, rgba(0,212,255,.07) 0%, transparent 65%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
   }
-  .bg::after {
-    content: '';
-    position: absolute;
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(168,85,247,.25) 0%, transparent 70%);
-    bottom: -100px; right: -100px;
-    animation: floatB 25s ease-in-out infinite;
-  }
-  @keyframes floatA {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    33%      { transform: translate(80px,60px) scale(1.1); }
-    66%      { transform: translate(-40px,100px) scale(.95); }
-  }
-  @keyframes floatB {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    33%      { transform: translate(-60px,-80px) scale(1.08); }
-    66%      { transform: translate(50px,-40px) scale(.92); }
-  }
-
   .bg .grid {
     position: absolute; inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-    background-size: 60px 60px;
+      linear-gradient(rgba(0,212,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,.05) 1px, transparent 1px);
+    background-size: 80px 80px;
   }
 
-  .particles {
-    position: absolute; inset: 0; overflow: hidden;
-  }
-  .particle {
-    position: absolute;
-    width: 4px; height: 4px;
-    background: rgba(255,255,255,.15);
-    border-radius: 50%;
-    animation: rise linear infinite;
-  }
-  .particle:nth-child(1)  { left:10%;  width:5px;height:5px; animation-duration:18s; animation-delay:0s; }
-  .particle:nth-child(2)  { left:25%;  width:3px;height:3px; animation-duration:22s; animation-delay:2s; }
-  .particle:nth-child(3)  { left:40%;  width:6px;height:6px; animation-duration:16s; animation-delay:4s; }
-  .particle:nth-child(4)  { left:55%;  width:3px;height:3px; animation-duration:20s; animation-delay:1s; }
-  .particle:nth-child(5)  { left:70%;  width:5px;height:5px; animation-duration:24s; animation-delay:3s; }
-  .particle:nth-child(6)  { left:85%;  width:4px;height:4px; animation-duration:19s; animation-delay:5s; }
-  .particle:nth-child(7)  { left:50%;  width:3px;height:3px; animation-duration:21s; animation-delay:7s; }
-  .particle:nth-child(8)  { left:15%;  width:5px;height:5px; animation-duration:17s; animation-delay:6s; }
-  @keyframes rise {
-    0%   { transform: translateY(100vh) scale(0); opacity:0; }
-    10%  { opacity:1; }
-    90%  { opacity:1; }
-    100% { transform: translateY(-10vh) scale(1); opacity:0; }
-  }
-
-  /* ===== Card ===== */
   .card {
     position: relative; z-index: 1;
     width: 420px;
-    background: rgba(255,255,255,.04);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    border-radius: 24px;
-    border: 1px solid rgba(255,255,255,.06);
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    border: 1px solid rgba(0,212,255,.08);
     box-shadow:
-      0 0 0 1px rgba(255,255,255,.03),
-      0 20px 60px rgba(0,0,0,.5);
+      0 0 0 1px rgba(255,255,255,.02),
+      0 8px 32px rgba(0,0,0,.6);
     padding: 44px 40px 40px;
-    animation: cardIn .8s cubic-bezier(.16,1,.3,1) both;
+    animation: cardIn var(--transition-slow) both;
   }
   @keyframes cardIn {
-    from { opacity:0; transform:translateY(30px) scale(.97); }
-    to   { opacity:1; transform:translateY(0) scale(1); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ===== Brand ===== */
   .brand {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
   }
   .brand .logo {
     display: inline-flex;
     align-items: center; justify-content: center;
     width: 52px; height: 52px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #6366f1, #a855f7);
+    border-radius: var(--radius);
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 20px rgba(0,212,255,.15);
     margin-bottom: 12px;
-    box-shadow: 0 4px 16px rgba(99,102,241,.35);
   }
   .brand .logo svg {
     width: 26px; height: 26px;
-    fill: #fff;
+    fill: var(--accent);
   }
   .brand h1 {
-    color: #fff;
+    color: var(--text-primary);
     font-size: 22px;
     font-weight: 600;
     letter-spacing: -.3px;
   }
-  .brand p {
-    color: rgba(255,255,255,.4);
-    font-size: 14px;
-    margin-top: 4px;
-  }
 
-  /* ===== Form ===== */
   .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
   .form-group label {
     display: block;
-    color: rgba(255,255,255,.6);
+    color: var(--text-secondary);
     font-size: 13px;
     font-weight: 500;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   .input-wrap {
     position: relative;
   }
   .input-wrap .icon {
     position: absolute;
-    left: 14px; top: 50%;
+    left: 0; top: 50%;
     transform: translateY(-50%);
     width: 18px; height: 18px;
-    color: rgba(255,255,255,.25);
+    color: var(--text-muted);
     pointer-events: none;
-    transition: color .25s;
+    transition: color var(--transition-normal);
   }
-  .input-wrap .icon svg { display:block; width:100%; height:100%; fill:currentColor; }
+  .input-wrap .icon svg { display: block; width: 100%; height: 100%; fill: currentColor; }
   .input-wrap input {
     width: 100%;
-    padding: 13px 14px 13px 44px;
-    background: rgba(255,255,255,.04);
-    border: 1px solid rgba(255,255,255,.08);
-    border-radius: 12px;
-    color: #fff;
+    padding: 12px 30px 12px 30px;
+    background: var(--bg-input);
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
     font-size: 15px;
+    font-family: var(--font-family);
     outline: none;
-    transition: border-color .25s, box-shadow .25s;
+    transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
   }
   .input-wrap input::placeholder {
-    color: rgba(255,255,255,.2);
+    color: var(--text-muted);
   }
   .input-wrap input:focus {
-    border-color: rgba(99,102,241,.5);
-    box-shadow: 0 0 0 3px rgba(99,102,241,.15);
+    border-bottom-color: var(--accent);
+    box-shadow: 0 1px 8px var(--accent-dim);
   }
   .input-wrap:focus-within .icon {
-    color: rgba(99,102,241,.7);
+    color: var(--accent);
   }
 
   /* error state */
   .input-wrap.error input {
-    border-color: rgba(239,68,68,.6);
-    box-shadow: 0 0 0 3px rgba(239,68,68,.15);
+    border-bottom-color: #ef4444;
+    box-shadow: 0 1px 8px rgba(239,68,68,.15);
   }
   .input-wrap.error .icon {
-    color: rgba(239,68,68,.6);
+    color: #ef4444;
   }
   .field-error {
     font-size: 12px;
@@ -195,66 +159,133 @@
     margin-top: 4px;
     min-height: 0;
     opacity: 0;
-    transition: opacity .2s;
+    transition: opacity var(--transition-normal);
   }
   .field-error.is-visible {
     opacity: 1;
   }
 
+  .input-wrap .toggle-pw {
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    transition: color var(--transition-normal);
+  }
+  .input-wrap .toggle-pw:hover { color: var(--text-secondary); }
+  .input-wrap .toggle-pw svg { width: 18px; height: 18px; fill: currentColor; display: block; }
+
   /* password strength */
   .strength-bar {
     display: flex;
     gap: 4px;
-    margin-top: 6px;
+    margin-top: 8px;
   }
   .strength-bar span {
     flex: 1;
-    height: 3px;
-    border-radius: 2px;
-    background: rgba(255,255,255,.06);
-    transition: background .3s;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--border);
+    transition: background var(--transition-normal);
   }
   .strength-bar span.active.weak   { background: #ef4444; }
   .strength-bar span.active.medium { background: #f59e0b; }
-  .strength-bar span.active.strong { background: #22c55e; }
+  .strength-bar span.active.strong { background: var(--accent); }
 
-  /* ===== Button ===== */
+  /* terms */
+  .terms {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0 0 24px;
+  }
+  .terms input[type="checkbox"] {
+    appearance: none;
+    width: 16px; height: 16px;
+    min-width: 16px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    margin-top: 1px;
+    transition: background var(--transition-normal), border-color var(--transition-normal);
+    position: relative;
+  }
+  .terms input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .terms input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px; top: 1px;
+    width: 6px; height: 9px;
+    border: solid var(--bg-primary);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .terms label {
+    color: var(--text-muted);
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1.5;
+  }
+  .terms a {
+    color: var(--accent);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity var(--transition-normal);
+  }
+  .terms a:hover { opacity: 1; }
+
   .btn-primary {
     width: 100%;
     padding: 14px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: #fff;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--accent);
     font-size: 15px;
     font-weight: 600;
+    font-family: var(--font-family);
     cursor: pointer;
-    transition: transform .2s, box-shadow .2s;
-    box-shadow: 0 4px 20px rgba(99,102,241,.3);
+    transition: box-shadow var(--transition-normal), transform var(--transition-fast);
     position: relative;
-    overflow: hidden;
-    margin-top: 4px;
   }
   .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 28px rgba(99,102,241,.45);
+    box-shadow: 0 0 16px var(--accent-glow);
   }
   .btn-primary:active {
-    transform: scale(.98);
+    transform: scale(0.98);
   }
   .btn-primary:disabled {
-    opacity: .5;
+    opacity: 0.5;
     cursor: not-allowed;
     transform: none;
-  }
-  .btn-primary::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,.08) 100%);
-    pointer-events: none;
+    box-shadow: none;
   }
 
-  /* ===== Toast ===== */
+  .footer {
+    text-align: center;
+    margin-top: 24px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    opacity: 0.7;
+    transition: opacity var(--transition-normal);
+  }
+  .footer a:hover { opacity: 1; }
+
+  /* toast */
   .toast {
     position: fixed;
     top: 24px;
@@ -262,10 +293,13 @@
     transform: translateX(-50%) translateY(-80px);
     z-index: 100;
     padding: 12px 24px;
-    border-radius: 12px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
     font-size: 14px;
     font-weight: 500;
-    color: #fff;
+    font-family: var(--font-family);
+    color: var(--text-primary);
+    background: var(--bg-card);
     opacity: 0;
     transition: transform .4s cubic-bezier(.16,1,.3,1), opacity .4s;
     pointer-events: none;
@@ -275,70 +309,14 @@
     transform: translateX(-50%) translateY(0);
   }
   .toast.error {
-    background: rgba(239,68,68,.9);
-    backdrop-filter: blur(8px);
+    border-color: rgba(239,68,68,.4);
+    box-shadow: 0 0 12px rgba(239,68,68,.15);
   }
   .toast.success {
-    background: rgba(34,197,94,.9);
-    backdrop-filter: blur(8px);
+    border-color: rgba(34,197,94,.4);
+    box-shadow: 0 0 12px rgba(34,197,94,.15);
   }
 
-  /* ===== Footer ===== */
-  .footer {
-    text-align: center;
-    margin-top: 22px;
-    color: rgba(255,255,255,.3);
-    font-size: 13px;
-  }
-  .footer a {
-    color: rgba(99,102,241,.6);
-    text-decoration: none;
-    font-weight: 500;
-    transition: color .2s;
-  }
-  .footer a:hover { color: #818cf8; }
-
-  /* ===== Terms ===== */
-  .terms {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin: 14px 0 18px;
-    font-size: 13px;
-    color: rgba(255,255,255,.45);
-  }
-  .terms input[type="checkbox"] {
-    appearance: none;
-    width: 16px; height: 16px;
-    min-width: 16px;
-    border: 1px solid rgba(255,255,255,.15);
-    border-radius: 4px;
-    background: transparent;
-    cursor: pointer;
-    margin-top: 2px;
-    transition: background .2s, border-color .2s;
-    position: relative;
-  }
-  .terms input[type="checkbox"]:checked {
-    background: #6366f1;
-    border-color: #6366f1;
-  }
-  .terms input[type="checkbox"]:checked::after {
-    content: '';
-    position: absolute;
-    left: 4px; top: 1px;
-    width: 6px; height: 9px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-  }
-  .terms a {
-    color: rgba(99,102,241,.6);
-    text-decoration: none;
-  }
-  .terms a:hover { color: #818cf8; }
-
-  /* ===== Responsive ===== */
   @media (max-width: 480px) {
     .card { width: calc(100% - 24px); padding: 32px 24px 28px; }
     .brand h1 { font-size: 20px; }
@@ -348,13 +326,8 @@
 <body>
 
 <div class="bg">
+  <div class="glow"></div>
   <div class="grid"></div>
-  <div class="particles">
-    <div class="particle"></div><div class="particle"></div>
-    <div class="particle"></div><div class="particle"></div>
-    <div class="particle"></div><div class="particle"></div>
-    <div class="particle"></div><div class="particle"></div>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -365,7 +338,6 @@
       <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
     </div>
     <h1>创客</h1>
-    <p>创建你的账号</p>
   </div>
 
   <form id="registerForm" novalidate>
@@ -398,6 +370,9 @@
           <svg viewBox="0 0 24 24"><path d="M18 8h-1V6a5 5 0 00-10 0v2H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V10a2 2 0 00-2-2zm-6 9a2 2 0 110-4 2 2 0 010 4zm3-9H9V6a3 3 0 116 0z"/></svg>
         </span>
         <input type="password" id="password" placeholder="至少 6 位" autocomplete="new-password" required>
+        <button type="button" class="toggle-pw" id="togglePw" aria-label="切换密码可见">
+          <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        </button>
       </div>
       <div class="strength-bar" id="strengthBar">
         <span></span><span></span><span></span>
@@ -412,6 +387,9 @@
           <svg viewBox="0 0 24 24"><path d="M18 8h-1V6a5 5 0 00-10 0v2H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V10a2 2 0 00-2-2zm-6 9a2 2 0 110-4 2 2 0 010 4zm3-9H9V6a3 3 0 116 0z"/></svg>
         </span>
         <input type="password" id="confirmPw" placeholder="再次输入密码" autocomplete="new-password" required>
+        <button type="button" class="toggle-pw" id="toggleConfirmPw" aria-label="切换密码可见">
+          <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        </button>
       </div>
       <div class="field-error" id="confirmError"></div>
     </div>
@@ -458,26 +436,41 @@
   function showToast(message, type) {
     toast.textContent = message;
     toast.className = 'toast ' + type + ' is-visible';
-    setTimeout(() => toast.classList.remove('is-visible'), 3500);
+    setTimeout(function () { toast.classList.remove('is-visible'); }, 3500);
   }
+
+  // ---- password toggle ----
+  function togglePasswordVisibility(inputId, btnId) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
+    btn.addEventListener('click', function () {
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      this.innerHTML = isPassword
+        ? '<svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>'
+        : '<svg viewBox="0 0 24 24"><path d="M3.27 2L2 3.27 6.22 7.5A10.5 10.5 0 001 12c1.73 4.39 6 7.5 11 7.5 1.85 0 3.62-.45 5.19-1.27L20.73 22 22 20.73 3.27 2zM12 17c-2.76 0-5-2.24-5-5 0-1.01.3-1.95.82-2.74l1.67 1.67A3.07 3.07 0 009 12a3 3 0 003 3c.47 0 .92-.11 1.33-.3l1.2 1.2A5.06 5.06 0 0112 17zm8.38-1.12l-1.8-1.8c.27-.65.42-1.35.42-2.08 0-2.76-2.24-5-5-5-1.37 0-2.63.55-3.55 1.43L7.65 5.5A10.5 10.5 0 0112 4.5c5 0 9.27 3.11 11 7.5a10.77 10.77 0 01-2.62 3.88z"/></svg>';
+    });
+  }
+  togglePasswordVisibility('password', 'togglePw');
+  togglePasswordVisibility('confirmPw', 'toggleConfirmPw');
 
   // ---- password strength meter ----
   const strengthBars = document.querySelectorAll('#strengthBar span');
 
   function updateStrength(pw) {
-    const len = pw.length;
-    let level = 0;
+    var len = pw.length;
+    var level = 0;
     if (len >= 6) {
-      const hasLetter = /[a-zA-Z]/.test(pw);
-      const hasDigit = /\d/.test(pw);
-      const hasSpecial = /[^a-zA-Z0-9]/.test(pw);
-      const kinds = hasLetter + hasDigit + hasSpecial;
+      var hasLetter = /[a-zA-Z]/.test(pw);
+      var hasDigit = /\d/.test(pw);
+      var hasSpecial = /[^a-zA-Z0-9]/.test(pw);
+      var kinds = hasLetter + hasDigit + hasSpecial;
       if (len >= 8 && kinds >= 2) level = 3;
       else if (len >= 6 && kinds >= 1) level = 2;
       else level = 1;
     }
-    const labels = ['', 'weak', 'medium', 'strong'];
-    strengthBars.forEach((bar, i) => {
+    var labels = ['', 'weak', 'medium', 'strong'];
+    strengthBars.forEach(function (bar, i) {
       bar.className = '';
       if (i < level) bar.classList.add('active', labels[level]);
     });
@@ -486,7 +479,7 @@
   passwordEl.addEventListener('input', function () {
     updateStrength(this.value);
     if (confirmEl.value) {
-      const match = this.value === confirmEl.value;
+      var match = this.value === confirmEl.value;
       setFieldError(confirmEl.closest('.input-wrap'), errors.confirm,
         match ? '' : '两次密码不一致');
     }
@@ -494,7 +487,7 @@
 
   confirmEl.addEventListener('input', function () {
     if (this.value) {
-      const match = this.value === passwordEl.value;
+      var match = this.value === passwordEl.value;
       setFieldError(this.closest('.input-wrap'), errors.confirm,
         match ? '' : '两次密码不一致');
     } else {
@@ -504,9 +497,9 @@
 
   // ---- validation ----
   function validateForm() {
-    let valid = true;
+    var valid = true;
 
-    const username = usernameEl.value.trim();
+    var username = usernameEl.value.trim();
     if (!username) {
       setFieldError(usernameEl.closest('.input-wrap'), errors.username, '请输入用户名');
       valid = false;
@@ -517,8 +510,8 @@
       setFieldError(usernameEl.closest('.input-wrap'), errors.username, '');
     }
 
-    const email = emailEl.value.trim();
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var email = emailEl.value.trim();
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
       setFieldError(emailEl.closest('.input-wrap'), errors.email, '请输入邮箱');
       valid = false;
@@ -529,7 +522,7 @@
       setFieldError(emailEl.closest('.input-wrap'), errors.email, '');
     }
 
-    const password = passwordEl.value;
+    var password = passwordEl.value;
     if (!password) {
       setFieldError(passwordEl.closest('.input-wrap'), errors.password, '请输入密码');
       valid = false;
@@ -540,7 +533,7 @@
       setFieldError(passwordEl.closest('.input-wrap'), errors.password, '');
     }
 
-    const confirm = confirmEl.value;
+    var confirm = confirmEl.value;
     if (!confirm) {
       setFieldError(confirmEl.closest('.input-wrap'), errors.confirm, '请确认密码');
       valid = false;
@@ -564,30 +557,31 @@
     e.preventDefault();
     if (!validateForm()) return;
 
-    const username = usernameEl.value.trim();
-    const email = emailEl.value.trim();
-    const password = passwordEl.value;
+    var username = usernameEl.value.trim();
+    var email = emailEl.value.trim();
+    var password = passwordEl.value;
 
-    const users = JSON.parse(localStorage.getItem('maker_users') || '[]');
-    if (users.some(u => u.email === email)) {
+    var users = JSON.parse(localStorage.getItem('maker_users') || '[]');
+    if (users.some(function (u) { return u.email === email; })) {
       showToast('该邮箱已被注册', 'error');
       return;
     }
 
-    users.push({ username, email, password });
+    users.push({ username: username, email: email, password: password });
     localStorage.setItem('maker_users', JSON.stringify(users));
 
     submitBtn.textContent = '注册成功…';
     submitBtn.disabled = true;
     showToast('注册成功！正在跳转…', 'success');
 
-    setTimeout(() => {
+    setTimeout(function () {
       window.location.href = 'login.html?email=' + encodeURIComponent(email);
     }, 1200);
   });
 
+  // ---- blur validations ----
   usernameEl.addEventListener('blur', function () {
-    const v = this.value.trim();
+    var v = this.value.trim();
     if (v && v.length < 2) {
       setFieldError(this.closest('.input-wrap'), errors.username, '用户名至少 2 个字符');
     } else {
@@ -596,8 +590,8 @@
   });
 
   emailEl.addEventListener('blur', function () {
-    const v = this.value.trim();
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var v = this.value.trim();
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (v && !emailRe.test(v)) {
       setFieldError(this.closest('.input-wrap'), errors.email, '邮箱格式不正确');
     } else {
